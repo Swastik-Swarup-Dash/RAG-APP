@@ -1,25 +1,28 @@
 package main
 
 import (
-    "log"
-    "rag-appp/config"
+	"log"
+	"rag-app/config"
+	"rag-app/internal/db"
+	"rag-app/internal/gemini"
+	"rag-app/internal/api"
 )
 
 func main() {
-    config.load()
-
-    if er : db.InitDB(); er != nil {
-        log.Fatalf("Database connection error: %v", er)
-    }
-    defer db.CloseDB()
-
-    if er: gemini.InitGemini(); er!=nil {
-        log.Fatalf("Gemini initialization error: %v", er)
-    }
-    defer gemini.CloseGemini()
-    
-    router := api.SetupRouter()
-    if er := router.Run(":8000"); er!=nil{
-      log.Fatalf("Server run error: %v", er)
-    }
+	config.Load()
+	// Initializing my database
+	if err := db.InitDB(); err != nil {
+		log.Fatalf("Database initialization failed: %v", err)
+	}
+	defer db.CloseDB()
+	// Initializing Gemini
+	if err := gemini.InitGemini(); err != nil {
+		log.Fatalf("Gemini initialization failed: %v", err)
+	}
+	defer gemini.CloseGemini()
+	// Starting own server
+	router := api.SetupRouter()
+	if err := router.Run(":8080"); err != nil {
+		log.Fatalf("Server failed to start: %v", err)
+	}
 }
