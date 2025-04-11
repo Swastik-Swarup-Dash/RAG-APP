@@ -8,7 +8,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-var Client *genai.Client // Global client instance
+var Client *genai.Client 
 
 func InitGemini() error {
 	ctx := context.Background()
