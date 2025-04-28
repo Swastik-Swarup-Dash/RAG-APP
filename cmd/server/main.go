@@ -3,18 +3,16 @@ package main
 import (
 	"log"
 	"rag-app/config"
-	"rag-app/internal/db"
+	"rag-app/internal/pinecone"
 	"rag-app/internal/gemini"
 	"rag-app/internal/api"
 )
 
 func main() {
 	config.Load()
-	// Initializing my database
-	if err := db.InitDB(); err != nil {
-		log.Fatalf("Database initialization failed: %v", err)
-	}
-	defer db.CloseDB()
+	if err := pinecone.InitPinecone(); err != nil {
+	log.Fatalf("Pinecone init failed: %v", err)
+    }
 	// Initializing Gemini
 	if err := gemini.InitGemini(); err != nil {
 		log.Fatalf("Gemini initialization failed: %v", err)
