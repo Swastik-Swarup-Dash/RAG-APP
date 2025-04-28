@@ -8,9 +8,9 @@ import (
 	"github.com/google/generative-ai-go/genai"
 )
 
-// GenerateAnswer combines retrieved context and user question
+
 func GenerateAnswer(question string, contextText string) (string, error) {
-	// Use proper parameter name to avoid shadowing context package
+	
 	prompt := fmt.Sprintf(
 		"Use this context: %s\nAnswer this question: %s",
 		contextText,
@@ -19,8 +19,8 @@ func GenerateAnswer(question string, contextText string) (string, error) {
 
 	model := gemini.Client.GenerativeModel("gemini-pro")
 	resp, err := model.GenerateContent(
-		context.Background(), // Proper context package usage
-		genai.Text(prompt),   // Correct text part creation
+		context.Background(), 
+		genai.Text(prompt),   
 	)
 	
 	if err != nil {
@@ -31,7 +31,7 @@ func GenerateAnswer(question string, contextText string) (string, error) {
 		return "", fmt.Errorf("empty response from Gemini")
 	}
 
-	// Convert genai.Part to string safely
+	
 	if textPart, ok := resp.Candidates[0].Content.Parts[0].(genai.Text); ok {
 		return string(textPart), nil
 	}
