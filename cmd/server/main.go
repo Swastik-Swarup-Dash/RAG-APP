@@ -13,6 +13,12 @@ func main() {
 	if err := pinecone.InitPinecone(); err != nil {
 	log.Fatalf("Pinecone init failed: %v", err)
     }
+
+	if err := db.InitDB(); err != nil {
+		log.Fatalf("Database initialization failed: %v", err)
+	}
+	defer db.CloseDB()
+	
 	// Initializing Gemini
 	if err := gemini.InitGemini(); err != nil {
 		log.Fatalf("Gemini initialization failed: %v", err)
